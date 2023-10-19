@@ -1,0 +1,163 @@
+import React, {useState} from 'react';
+
+import {
+       View, 
+       Text,
+       TextInput,
+       TouchableOpacity,
+       StyleSheet,
+} from 'react-native';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+function HomeScreen({ navigation }){
+       const [textValue, setTextValue] = useState('');
+       const [getValue, setGetValue] = useState('');
+
+       const fnSaveValue = () => {
+               AsyncStorage.setItem('@data',textValue);
+       };
+
+       const fnGetValue = () => {
+               AsyncStorage.getItem('@data').then(
+                       (value) => setGetValue(value)
+               );
+       };
+
+       return(
+               <View>
+                       <Text styles={styles.title}>ICE TASK THREE</Text>
+                       <TextInput 
+                               style={styles.input}
+                               placeholder='Enter something here'
+                               onChangeText={setTextValue}
+                               value={textValue}
+                       />
+                       <TouchableOpacity onPress={fnSaveValue}>
+                               <View style={styles.button}>
+                                       <Text style={styles.buttonText}>SAVE VALUE</Text>
+                               </View>
+                       </TouchableOpacity>
+                       <TouchableOpacity onPress={fnGetValue}>
+                               <View style={styles.button}>
+                                       <Text style={styles.buttonText}>RETRIEVE VALUE</Text>
+                               </View>
+                       </TouchableOpacity>
+                       <Text style={styles.output}>{getValue}</Text>
+
+                        <Button
+                                title="Go to next screen"
+                                onPress={() => navigation.navigate('Effect')}
+                        />
+               </View>
+       );
+
+}
+
+
+function EffectScreen({ navigation }) {
+ return (
+   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+     <Button title="Go back" onPress={() => navigation.goBack()} />
+   </View>
+
+       const [count, setCount] = useState(0);
+       const [dispText, setDispText] = useState('');
+
+       useEffect(() => {
+               setDispText('Effect: The count is ' + count);
+
+       }, [count]);
+
+   <View style={StyleSheet.container}>
+                       <Text style={StyleSheet.textDisp}>COUNT USEEFFECT</Text>
+                       <View style={StyleSheet.buttons}>
+                               <Button 
+                                       title='Increment'
+                                       onPress={() => setCount(count + 1)}
+                               />
+                       </View>
+                       <View style={StyleSheet.buttons}>
+                               <Button 
+                                       title='Decrement'
+                                       onPress={() => setCount(count - 1)}
+                               />
+                       </View>
+                       <Text style={styles.textDisp}>Count: {count}</Text>
+                       <Text style={styles.textDisp}>{dispText}</Text>
+               </View>
+ );
+}
+
+function MyStack() {
+ return (
+   <Stack.Navigator>
+     <Stack.Screen name="Home" component={HomeScreen} />
+     <Stack.Screen name="Effect" component={EffectScreen} />
+   </Stack.Navigator>
+ );
+}
+
+const styles = StyleSheet.create({
+       container:{
+               flex: 1,
+               padding: 8,
+       },
+       title:{
+               fontSize: 28,
+               fontWeight: 'bold',
+               textAlign: 'center',
+               paddingVertical: 20,
+               color: 'green',
+       },
+       output:{
+               fontSize: 22,
+               padding: 10,
+               textAlign: 'center',
+               borderWidth: 1,
+               borderColor: 'orange',
+       },
+       button:{
+               fontSize: 20,
+               color: 'white',
+               backgroundColor: 'green',
+               padding: 8,
+               marginTop: 32,
+               width: '100%',
+       },
+       buttonText:{
+                   padding: 5,
+                   color: 'white',
+                   textAlign: 'center',
+       },
+       input:{
+               textAlign: 'center',
+               height: 40,
+               width: '100%',
+               borderWidth: 1,
+               borderColor: 'orange',
+       },
+               container: {
+               flex: 1,
+               padding: 10,
+       },
+       buttons: {
+               margin: 5,
+               padding: 5,
+       },
+       textDisp: {
+               fontSize: 32,
+               fontWeight: 'bold',
+       },
+});
+
+export default function App() {
+ return (
+   <NavigationContainer>
+     <MyStack />
+   </NavigationContainer>
+ );
+}
